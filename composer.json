@@ -8,7 +8,7 @@
         "php": ">=8.1",
         "ext-json": "*",
         "binsoul/net-mqtt-client-react": "^0.7.3",
-        "inisire/netbus": "dev-main",
+        "inisire/netbus": "dev-master",
         "react/datagram": "*",
         "symfony/yaml": "^6.3"
     },
