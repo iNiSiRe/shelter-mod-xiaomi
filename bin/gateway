@@ -1,0 +1,51 @@
+#!/usr/bin/env php
+<?php
+
+require_once dirname(__DIR__).'/vendor/autoload.php';
+
+if (count($argv) < 2) {
+    echo 'Error: Not enough params' . PHP_EOL;
+    echo 'Usage: bin/gateway config.yml' . PHP_EOL;
+    exit(-1);
+}
+
+$configPath = $argv[1];
+
+if (!file_exists($configPath)) {
+    echo 'Error: Config file not exists' . PHP_EOL;
+    exit(-1);
+}
+
+$config = \Symfony\Component\Yaml\Yaml::parse(file_get_contents($configPath));
+
+$loop = \React\EventLoop\Loop::get();
+$logger = new \inisire\NetBus\Logging\EchoLogger();
+
+$eventBus = new \inisire\NetBus\EventSourceServer($loop, $logger);
+$eventBus->start($config['server']['event_bus'] ?? '0.0.0.0:5556');
+
+$gateway = new \Shelter\Module\Xiaomi\XiaomiGatewayClient(
+    $logger,
+    new \React\Socket\Connector($loop),
+    $loop,
+    new \Shelter\Module\Xiaomi\Service\MiioClient($loop, $logger),
+    new \Shelter\Module\Xiaomi\Service\PropertiesConverter(),
+    $eventBus
+);
+
+$subDevices = [];
+foreach ($config['gateway']['subdevices'] ?? [] as $device) {
+    $subDevices[$device['did']] = new \Shelter\Module\Xiaomi\SubDevice($device['model'], $device['did']);
+}
+
+$did = $config['gateway']['did'] ?? null;
+$host = $config['gateway']['host'] ?? null;
+$token = $config['gateway']['token'] ?? null;
+
+$gateway->connect(new \Shelter\Module\Xiaomi\XiaomiGateway($did, $host, $token, $subDevices));
+
+$endpointServer = new \inisire\NetBus\QueryHandlerServer($loop, $logger);
+$endpointServer->registerHandler(new \Shelter\Module\Xiaomi\XiaomiQueryHandler($gateway));
+$endpointServer->start($config['server']['query_bus'] ?? '0.0.0.0:5555');
+
+//\React\EventLoop\Loop::run();
