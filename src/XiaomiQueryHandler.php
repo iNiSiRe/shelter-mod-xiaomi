@@ -98,8 +98,8 @@ class XiaomiQueryHandler implements QueryHandler
             'Gateway.Miio.GetInfo' => $this->getInfo(),
             'Gateway.Miio.TriggerAlarm' => $this->triggerAlarm(),
             'Gateway.Miio.DisarmAlarm' => $this->disarmAlarm(),
-            'Gateway.Miio.SetArmingOn' => $this->gateway->setArming(true),
-            'Gateway.Miio.SetArmingOff' => $this->gateway->setArming(false),
+            'Gateway.Miio.SetArmingOn' => $this->setArming(true),
+            'Gateway.Miio.SetArmingOff' => $this->setArming(false),
             default => new Result(-1, ['error' => 'Bad query'])
         };
     }

@@ -104,18 +104,6 @@ class XiaomiGatewayClient
         $watchdog->run($mqtt);
     }
 
-    public function setAlarm(int $value): PromiseInterface
-    {
-        return $this
-            ->miioClient
-            ->call($this->gateway, 'set_properties', [
-                'did' => $this->gateway->did,
-                'siid' => 3,
-                'piid' => 22,
-                'value' => $value,
-            ]);
-    }
-
     public function updateSubDevice(string $did, array $params = [])
     {
         $device = $this->gateway->subDevices[$did] ?? null;
@@ -153,17 +141,31 @@ class XiaomiGatewayClient
 
     public function triggerAlarm()
     {
-        return $this->setAlarm(self::ALARM_TRIGGERED_STATUS);
+        return $this
+            ->miioClient
+            ->call($this->gateway, 'set_properties', [
+                'did' => $this->gateway->did,
+                'siid' => 3,
+                'piid' => 22,
+                'value' => 1,
+            ]);
     }
 
     public function disarmAlarm()
     {
-        return $this->setAlarm(self::ALARM_DISARMED_STATUS);
+        return $this
+            ->miioClient
+            ->call($this->gateway, 'set_properties', [
+                'did' => $this->gateway->did,
+                'siid' => 3,
+                'piid' => 1,
+                'value' => 0,
+            ]);
     }
 
     public function setArming(bool $on): PromiseInterface
     {
-        return $this->miioClient->call($this->gateway, 'set_arming', [$on ? 'on' : 'off']);
+        return $this->miioClient->call($this->gateway, 'set_arming', [$on ? ['on'] : ['off']]);
     }
 
     public function getInfo(): PromiseInterface
