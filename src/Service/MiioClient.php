@@ -150,16 +150,16 @@ class MiioClient
                 }
             })
             ->then(function (Socket $socket) use ($device, $method, $params) {
-                $packetId = &$device->runtime['packetId'];
-
-                $packetId++;
-
-                if ($packetId > 9999) {
-                    $packetId = 1;
-                }
+//                $packetId = &$device->runtime['packetId'];
+//
+//                $packetId++;
+//
+//                if ($packetId > 9999) {
+//                    $packetId = 1;
+//                }
 
                 $message = json_encode([
-                    'id' => $packetId,
+                    'id' => random_int(100000000, 999999999),
                     'method' => $method,
                     'params' => $params
                 ]);
