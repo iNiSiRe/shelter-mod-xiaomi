@@ -33,6 +33,7 @@ class XiaomiQueryHandler implements QueryHandler
             'Gateway.Miio.DisarmAlarm',
             'Gateway.Miio.SetArmingOn',
             'Gateway.Miio.SetArmingOff',
+            'Gateway.Miio.Call',
         ];
     }
 
