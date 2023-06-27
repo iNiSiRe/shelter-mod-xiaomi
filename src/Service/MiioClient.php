@@ -152,7 +152,8 @@ class MiioClient
                 $data = $this->packPacket(
                     $device,
                     json_encode([
-                        'id' => mt_rand(1, getrandmax()),
+//                        'id' => mt_rand(1, getrandmax()),
+                        'id' => microtime(true) * 10000,
                         'method' => $method,
                         'params' => $params
                     ])
