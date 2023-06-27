@@ -74,9 +74,18 @@ class XiaomiQueryHandler implements QueryHandler
 
     public function getInfo(): PromiseInterface
     {
-        return $this->gateway->getInfo()->then(function ($info) {
-            return new Result(0, $info);
-        });
+        return $this->gateway->getInfo()
+            ->then(function ($info) {
+                return new Result(0, $info);
+            });
+    }
+
+    public function setArming(bool $on): PromiseInterface
+    {
+        return $this->gateway->setArming($on)
+            ->then(function (array $result) {
+                return new Result(0, $result);
+            });
     }
 
     public function handleQuery(QueryInterface $query): Query\ResultInterface|PromiseInterface
@@ -87,6 +96,8 @@ class XiaomiQueryHandler implements QueryHandler
             'Gateway.Miio.GetInfo' => $this->getInfo(),
             'Gateway.Miio.TriggerAlarm' => $this->triggerAlarm(),
             'Gateway.Miio.DisarmAlarm' => $this->disarmAlarm(),
+            'Gateway.Miio.SetArmingOn' => $this->gateway->setArming(true),
+            'Gateway.Miio.SetArmingOff' => $this->gateway->setArming(false),
             default => new Result(-1, ['error' => 'Bad query'])
         };
     }

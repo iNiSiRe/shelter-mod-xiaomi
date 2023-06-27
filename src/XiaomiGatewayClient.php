@@ -161,6 +161,11 @@ class XiaomiGatewayClient
         return $this->setAlarm(self::ALARM_DISARMED_STATUS);
     }
 
+    public function setArming(bool $on): PromiseInterface
+    {
+        return $this->miioClient->call($this->gateway, 'set_arming', [$on ? 'on' : 'off']);
+    }
+
     public function getInfo(): PromiseInterface
     {
         return $this->miioClient->call($this->gateway, 'miIO.info', []);
