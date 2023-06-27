@@ -44,18 +44,20 @@ class XiaomiQueryHandler implements QueryHandler
         ]);
     }
 
-    public function triggerAlarm(): Query\ResultInterface
+    public function triggerAlarm(): PromiseInterface
     {
-        $this->gateway->triggerAlarm();
-
-        return new Result(0, ['success' => true]);
+        return $this->gateway->triggerAlarm()
+            ->then(function ($result) {
+                return new Result(0, $result);
+            });
     }
 
-    public function disarmAlarm(): Query\ResultInterface
+    public function disarmAlarm(): PromiseInterface
     {
-        $this->gateway->disarmAlarm();
-
-        return new Result(0, ['success' => true]);
+        return $this->gateway->disarmAlarm()
+            ->then(function ($result) {
+                return new Result(0, $result);
+            });
     }
 
     public function getSubDevices(): Query\ResultInterface

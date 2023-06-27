@@ -104,7 +104,7 @@ class XiaomiGatewayClient
         $watchdog->run($mqtt);
     }
 
-    public function setAlarm(int $value)
+    public function setAlarm(int $value): PromiseInterface
     {
         return $this
             ->miioClient
@@ -113,8 +113,7 @@ class XiaomiGatewayClient
                 'siid' => 3,
                 'piid' => 22,
                 'value' => $value,
-            ])
-            ->then(function ($response) {});
+            ]);
     }
 
     public function updateSubDevice(string $did, array $params = [])
@@ -154,12 +153,12 @@ class XiaomiGatewayClient
 
     public function triggerAlarm()
     {
-        $this->setAlarm(self::ALARM_TRIGGERED_STATUS);
+        return $this->setAlarm(self::ALARM_TRIGGERED_STATUS);
     }
 
     public function disarmAlarm()
     {
-        $this->setAlarm(self::ALARM_DISARMED_STATUS);
+        return $this->setAlarm(self::ALARM_DISARMED_STATUS);
     }
 
     public function getInfo(): PromiseInterface
