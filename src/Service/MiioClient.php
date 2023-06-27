@@ -135,6 +135,7 @@ class MiioClient
                         ->then(function ($response) use ($device, $socket) {
                             $packet = $this->unpackPacket($response);
 
+                            $device->runtime['packetId'] = 1;
                             $device->runtime['deviceId'] = $packet['DeviceId'];
                             $device->runtime['deviceType'] = $packet['DeviceType'];
                             $device->runtime['timestampDelta'] = $packet['Timestamp'] - time();
@@ -149,9 +150,16 @@ class MiioClient
                 }
             })
             ->then(function (Socket $socket) use ($device, $method, $params) {
+                $packetId = &$device->runtime['packetId'];
+
+                $packetId++;
+
+                if ($packetId > 9999) {
+                    $packetId = 1;
+                }
+
                 $message = json_encode([
-                    'id' => mt_rand(1, getrandmax()),
-//                    'id' => microtime(true) * 10000,
+                    'id' => $packetId,
                     'method' => $method,
                     'params' => $params
                 ]);
