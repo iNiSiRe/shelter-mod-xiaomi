@@ -29,7 +29,9 @@ class XiaomiQueryHandler implements QueryHandler
             'Gateway.GetSubDevices',
             'Gateway.Miio.GetInfo',
             'Gateway.Miio.TriggerAlarm',
-            'Gateway.Miio.DisarmAlarm'
+            'Gateway.Miio.DisarmAlarm',
+            'Gateway.Miio.SetArmingOn',
+            'Gateway.Miio.SetArmingOff',
         ];
     }
 
