@@ -10,6 +10,7 @@ use inisire\NetBus\QueryInterface;
 use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
 use function React\Async\await;
+use function React\Promise\resolve;
 
 class XiaomiQueryHandler implements QueryHandler
 {
@@ -90,6 +91,22 @@ class XiaomiQueryHandler implements QueryHandler
             });
     }
 
+    public function call(QueryInterface $query): PromiseInterface
+    {
+        $data = $query->getData();
+        $method = $data['method'] ?? null;
+        $params = $data['params'] ?? [];
+
+        if (!$method) {
+            return resolve(new Result(-1, ['error' => 'Parameter "method" is required']));
+        }
+
+        return $this->gateway->call($method, $params)
+            ->then(function (array $result) {
+                return new Result(0, $result);
+            });
+    }
+
     public function handleQuery(QueryInterface $query): Query\ResultInterface|PromiseInterface
     {
         return match ($query->getName()) {
@@ -100,6 +117,7 @@ class XiaomiQueryHandler implements QueryHandler
             'Gateway.Miio.DisarmAlarm' => $this->disarmAlarm(),
             'Gateway.Miio.SetArmingOn' => $this->setArming(true),
             'Gateway.Miio.SetArmingOff' => $this->setArming(false),
+            'Gateway.Miio.Call' => $this->call($query),
             default => new Result(-1, ['error' => 'Bad query'])
         };
     }

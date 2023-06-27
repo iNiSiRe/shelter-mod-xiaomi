@@ -168,6 +168,11 @@ class XiaomiGatewayClient
         return $this->miioClient->call($this->gateway, 'set_arming', [$on ? ['on'] : ['off']]);
     }
 
+    public function call(string $method, array $params = []): PromiseInterface
+    {
+        return $this->miioClient->call($this->gateway, $method, $params);
+    }
+
     public function getInfo(): PromiseInterface
     {
         return $this->miioClient->call($this->gateway, 'miIO.info', []);
