@@ -149,15 +149,16 @@ class MiioClient
                 }
             })
             ->then(function (Socket $socket) use ($device, $method, $params) {
-                $data = $this->packPacket(
-                    $device,
-                    json_encode([
-//                        'id' => mt_rand(1, getrandmax()),
-                        'id' => microtime(true) * 10000,
-                        'method' => $method,
-                        'params' => $params
-                    ])
-                );
+                $message = json_encode([
+                    'id' => mt_rand(1, getrandmax()),
+//                    'id' => microtime(true) * 10000,
+                    'method' => $method,
+                    'params' => $params
+                ]);
+
+                $this->logger->debug('Call request', ['channel' => __CLASS__, 'message' => $message]);
+
+                $data = $this->packPacket($device, $message);
 
                 return $this
                     ->sendData($socket, $data)
