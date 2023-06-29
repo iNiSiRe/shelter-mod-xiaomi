@@ -10,6 +10,7 @@
         "binsoul/net-mqtt-client-react": "^0.7.3",
         "inisire/netbus": "dev-master",
         "react/datagram": "*",
+        "symfony/event-dispatcher": "^6.3",
         "symfony/yaml": "^6.3"
     },
     "repositories": [

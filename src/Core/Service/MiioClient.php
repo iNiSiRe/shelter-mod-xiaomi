@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Shelter\Module\Xiaomi\Service;
+namespace Shelter\Module\Xiaomi\Core\Service;
 
 
 use Psr\Log\LoggerInterface;
@@ -10,7 +10,7 @@ use React\Datagram\Socket;
 use React\EventLoop\LoopInterface;
 use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
-use Shelter\Module\Xiaomi\Device;
+use Shelter\Module\Xiaomi\Core\Device;
 
 class MiioClient
 {

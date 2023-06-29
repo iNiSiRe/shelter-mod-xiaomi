@@ -1,6 +1,8 @@
 <?php
 
-namespace Shelter\Module\Xiaomi;
+namespace Shelter\Module\Xiaomi\Core\Gateway;
+
+use Shelter\Module\Xiaomi\Core\Device;
 
 class XiaomiGateway extends Device
 {

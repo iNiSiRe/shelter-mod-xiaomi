@@ -1,6 +1,6 @@
 <?php
 
-namespace Shelter\Module\Xiaomi;
+namespace Shelter\Module\Xiaomi\Core\Gateway;
 
 class SubDevice
 {

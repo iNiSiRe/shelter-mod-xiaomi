@@ -1,6 +1,18 @@
 #!/usr/bin/env php
 <?php
 
+use inisire\NetBus\Event\Server\EventBus;
+use inisire\NetBus\Logging\EchoLogger;
+use inisire\NetBus\Query\Server\QueryBus;
+use React\EventLoop\Loop;
+use React\Socket\Connector;
+use Shelter\Module\Xiaomi\Application\Configuration;
+use Shelter\Module\Xiaomi\Application\XiaomiGatewayModule;
+use Shelter\Module\Xiaomi\Core\Service\MiioClient;
+use Shelter\Module\Xiaomi\Core\Service\PropertiesConverter;
+use Shelter\Module\Xiaomi\Core\Gateway\XiaomiGatewayClient;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
 require_once dirname(__DIR__).'/vendor/autoload.php';
 
 if (count($argv) < 2) {
@@ -16,36 +28,23 @@ if (!file_exists($configPath)) {
     exit(-1);
 }
 
-$config = \Symfony\Component\Yaml\Yaml::parse(file_get_contents($configPath));
+$config = new Configuration($configPath);
 
-$loop = \React\EventLoop\Loop::get();
-$logger = new \inisire\NetBus\Logging\EchoLogger();
+$loop = Loop::get();
+$logger = new EchoLogger();
+$dispatcher = new EventDispatcher();
 
-$eventBus = new \inisire\NetBus\EventSourceServer($loop, $logger);
-$eventBus->start($config['server']['event_bus'] ?? '0.0.0.0:5556');
+$eventBus = new EventBus($loop, $logger);
+$eventBus->start($config->getEventBusBind());
 
-$gateway = new \Shelter\Module\Xiaomi\XiaomiGatewayClient(
-    $logger,
-    new \React\Socket\Connector($loop),
-    $loop,
-    new \Shelter\Module\Xiaomi\Service\MiioClient($loop, $logger),
-    new \Shelter\Module\Xiaomi\Service\PropertiesConverter(),
-    $eventBus
-);
+$queryBus = new QueryBus($loop, $logger);
+$queryBus->start($config->getQueryBusBind());
 
-$subDevices = [];
-foreach ($config['gateway']['subdevices'] ?? [] as $device) {
-    $subDevices[$device['did']] = new \Shelter\Module\Xiaomi\SubDevice($device['model'], $device['did']);
-}
+$gateway = new XiaomiGatewayClient($logger, new Connector($loop), $loop, new MiioClient($loop, $logger), new PropertiesConverter(), $dispatcher);
+$gateway->connect($config->getGateway());
 
-$did = $config['gateway']['did'] ?? null;
-$host = $config['gateway']['host'] ?? null;
-$token = $config['gateway']['token'] ?? null;
+$module = new XiaomiGatewayModule($gateway, $eventBus, $config);
+$dispatcher->addSubscriber($module);
+$queryBus->registerHandler($config->getNodeId(), $module);
 
-$gateway->connect(new \Shelter\Module\Xiaomi\XiaomiGateway($did, $host, $token, $subDevices));
-
-$endpointServer = new \inisire\NetBus\QueryHandlerServer($loop, $logger);
-$endpointServer->registerHandler(new \Shelter\Module\Xiaomi\XiaomiQueryHandler($gateway));
-$endpointServer->start($config['server']['query_bus'] ?? '0.0.0.0:5555');
-
-//\React\EventLoop\Loop::run();
+Loop::run();

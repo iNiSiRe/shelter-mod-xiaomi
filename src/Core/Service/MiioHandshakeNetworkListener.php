@@ -1,6 +1,6 @@
 <?php
 
-namespace Shelter\Module\Xiaomi\Service;
+namespace Shelter\Module\Xiaomi\Core\Service;
 
 use Psr\Log\LoggerInterface;
 use React\EventLoop\LoopInterface;

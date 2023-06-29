@@ -1,13 +1,13 @@
 <?php
 
-namespace Shelter\Module\Xiaomi\Event;
+namespace Shelter\Module\Xiaomi\Application\Event;
 
-use inisire\NetBus\Event;
+use inisire\NetBus\Event\EventInterface;
 
-class GatewaySubDeviceUpdate implements Event
+class DeviceUpdateEvent implements EventInterface
 {
     public function __construct(
-        private readonly string $did,
+        private readonly string $deviceId,
         private readonly array $properties = []
     )
     {
@@ -15,13 +15,13 @@ class GatewaySubDeviceUpdate implements Event
 
     public function getName(): string
     {
-        return 'XiaomiGateway.SubDeviceUpdate';
+        return 'Shelter.DeviceUpdate';
     }
 
     public function getData(): array
     {
         return [
-            'did' => $this->did,
+            'deviceId' => $this->deviceId,
             'properties' => $this->properties
         ];
     }

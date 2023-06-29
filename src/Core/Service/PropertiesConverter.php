@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Shelter\Module\Xiaomi\Service;
+namespace Shelter\Module\Xiaomi\Core\Service;
 
 
 class PropertiesConverter

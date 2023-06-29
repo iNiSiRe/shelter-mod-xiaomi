@@ -1,30 +1,27 @@
 <?php
 
-namespace Shelter\Module\Xiaomi;
+namespace Shelter\Module\Xiaomi\Core\Gateway;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use React\Promise\PromiseInterface;
-use Shelter\Module\Xiaomi as Xiaomi;
+use Shelter\Module\Xiaomi\Core as Core;
 use BinSoul\Net\Mqtt as MQTT;
 use React\EventLoop\LoopInterface;
 use React\Socket\ConnectorInterface;
-use Shelter\Module\Xiaomi\Event\GatewaySubDeviceUpdate;
+use Shelter\Module\Xiaomi\Core\Event\GatewaySubDeviceUpdate;
 
 class XiaomiGatewayClient
 {
-    private const ALARM_DISARMED_STATUS = 0;
-    private const ALARM_TRIGGERED_STATUS = 1;
-
     private ?XiaomiGateway $gateway = null;
 
     public function __construct(
-        private readonly LoggerInterface                    $logger,
-        private readonly ConnectorInterface                 $connector,
-        private readonly LoopInterface                      $loop,
-        private readonly Xiaomi\Service\MiioClient          $miioClient,
-        private readonly Xiaomi\Service\PropertiesConverter $converter,
-        private readonly EventDispatcherInterface           $eventBus
+        private readonly LoggerInterface                  $logger,
+        private readonly ConnectorInterface               $connector,
+        private readonly LoopInterface                    $loop,
+        private readonly Core\Service\MiioClient          $miioClient,
+        private readonly Core\Service\PropertiesConverter $converter,
+        private readonly EventDispatcherInterface         $dispatcher
     )
     {
     }
@@ -100,11 +97,11 @@ class XiaomiGatewayClient
 
         $mqtt->connect($gateway->host);
 
-        $watchdog = new Xiaomi\Service\MqttConnectionWatchdog($this->loop);
+        $watchdog = new Core\Service\MqttConnectionWatchdog($this->loop);
         $watchdog->run($mqtt);
     }
 
-    public function updateSubDevice(string $did, array $params = [])
+    private function updateSubDevice(string $did, array $params = [])
     {
         $device = $this->gateway->subDevices[$did] ?? null;
 
@@ -122,13 +119,7 @@ class XiaomiGatewayClient
             return;
         }
 
-        $convertedParams['updated_at'] = time();
-
-        foreach ($convertedParams as $name => $value) {
-            $device->properties[$name] = $value;
-        }
-
-        $this->eventBus->dispatch(new GatewaySubDeviceUpdate($device->did, $convertedParams));
+        $this->dispatcher->dispatch(new GatewaySubDeviceUpdate($device->did, $convertedParams));
     }
 
     /**
@@ -143,29 +134,24 @@ class XiaomiGatewayClient
     {
         return $this
             ->miioClient
-            ->call($this->gateway, 'set_properties', [
+            ->call($this->gateway, 'set_properties', [[
                 'did' => $this->gateway->did,
                 'siid' => 3,
                 'piid' => 22,
                 'value' => 1,
-            ]);
+            ]]);
     }
 
     public function disarmAlarm()
     {
         return $this
             ->miioClient
-            ->call($this->gateway, 'set_properties', [
+            ->call($this->gateway, 'set_properties', [[
                 'did' => $this->gateway->did,
                 'siid' => 3,
-                'piid' => 1,
+                'piid' => 22,
                 'value' => 0,
-            ]);
-    }
-
-    public function setArming(bool $on): PromiseInterface
-    {
-        return $this->miioClient->call($this->gateway, 'set_arming', [$on ? ['on'] : ['off']]);
+            ]]);
     }
 
     public function call(string $method, array $params = []): PromiseInterface

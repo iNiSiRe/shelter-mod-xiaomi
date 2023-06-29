@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Shelter\Module\Xiaomi\Service;
+namespace Shelter\Module\Xiaomi\Core\Service;
 
 
-use Shelter\Module\Xiaomi\Device;
+use Shelter\Module\Xiaomi\Core\Device;
 
 class Miio
 {
