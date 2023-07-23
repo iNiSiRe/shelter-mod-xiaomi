@@ -1,15 +1,19 @@
 {
-    "name": "inisire/xiaomi-gateway",
-    "type": "project",
-    "license": "proprietary",
+    "name": "inisire/shelter-mod-xiaomi",
+    "type": "module",
+    "keywords": ["php", "smart-home", "shelter", "module", "xiaomi"],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": ">=8.1",
         "ext-json": "*",
-        "binsoul/net-mqtt-client-react": "^0.7.3",
-        "inisire/netbus": "dev-master",
-        "react/datagram": "*",
+        "ext-openssl": "*",
+        "ext-sockets": "*",
+        "evenement/evenement": "^3.0",
+        "inisire/logging": "dev-master",
+        "inisire/netbus-mqtt": "dev-master",
+        "inisire/protocol-miio": "dev-master",
+        "inisire/shelter-core": "dev-master",
         "symfony/event-dispatcher": "^6.3",
         "symfony/yaml": "^6.3"
     },
@@ -17,6 +21,34 @@
         {
             "type": "vcs",
             "url": "https://github.com/inisire/netbus"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/inisire/fibers"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/inisire/protocol-byte-buffer"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/inisire/protocol-miio"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/inisire/fibers-mqtt"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/inisire/logging"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/inisire/netbus-mqtt"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/inisire/shelter-core"
         }
     ],
     "config": {
@@ -29,7 +61,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Shelter\\Module\\Xiaomi\\": "src/"
+            "inisire\\Xiaomi\\": "src/"
         }
     }
 }

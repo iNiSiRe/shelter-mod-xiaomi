@@ -1,6 +1,6 @@
 <?php
 
-namespace Shelter\Module\Xiaomi\Core\Event;
+namespace inisire\Xiaomi\Core\Gateway\Event;
 
 class GatewaySubDeviceUpdate
 {

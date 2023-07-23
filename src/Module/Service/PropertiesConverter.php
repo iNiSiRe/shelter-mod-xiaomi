@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Shelter\Module\Xiaomi\Core\Service;
+namespace inisire\Xiaomi\Module\Service;
 
 
 class PropertiesConverter
@@ -13,6 +13,7 @@ class PropertiesConverter
     ];
 
     const FORMAT_DIVIDE = 'div';
+    const FORMAT_TO_BOOL = 'bool';
 
     const MAP = [
         'lumi.remote.b286acn01' => [
@@ -24,10 +25,10 @@ class PropertiesConverter
             '3.1.85' => 'state',
         ],
         'lumi.sensor_magnet.aq2' => [
-            '3.1.85' => 'state',
+            '3.1.85' => ['open', self::FORMAT_TO_BOOL],
         ],
         'lumi.sensor_motion.aq2' => [
-            '3.1.85' => 'state',
+            '3.1.85' => ['motion', self::FORMAT_TO_BOOL],
             '0.3.85' => '_illuminance',
             '0.4.85' => 'illuminance',
         ],
@@ -45,11 +46,11 @@ class PropertiesConverter
 
     public function format(string $format, mixed $value, mixed $param): mixed
     {
-        if ($format == self::FORMAT_DIVIDE) {
-            return round($value / $param, 1);
-        } else {
-            return $value;
-        }
+        return match ($format) {
+            self::FORMAT_DIVIDE => round($value / $param, 1),
+            self::FORMAT_TO_BOOL => (bool) $value,
+            default => $value
+        };
     }
 
     public function convert(string $model, array $properties)

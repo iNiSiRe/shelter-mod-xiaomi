@@ -1,0 +1,46 @@
+#!/usr/bin/env php
+<?php
+
+use inisire\fibers\Network\SocketFactory;
+use inisire\Logging\EchoLogger;
+use inisire\NetBus\Event\CallableSubscription;
+use inisire\NetBus\Event\EventInterface;
+use inisire\NetBus\Event\Subscription\Matches;
+use inisire\NetBus\Event\Subscription\Wildcard;
+use inisire\Xiaomi\Module\Configuration;
+use Shelter\Bus\Event\DiscoverRequest;
+use Shelter\Bus\Event\DiscoverResponse;
+use Shelter\Bus\Events;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
+require_once dirname(__DIR__).'/vendor/autoload.php';
+
+$bus = getenv('BUS');
+$path = getenv('CONFIG');
+
+if ($bus === false || $path === false) {
+    echo 'Error: Not enough params' . PHP_EOL;
+    echo 'Usage: BUS=127.0.0.1 CONFIG=config.yml bin/module' . PHP_EOL;
+    exit(-1);
+}
+
+if (!file_exists($path)) {
+    echo 'Error: Config file not exists' . PHP_EOL;
+    exit(-1);
+}
+
+\inisire\fibers\async(function () use ($bus, $path) {
+    $logger = new EchoLogger();
+    $sockets = new SocketFactory();
+
+    $config = Configuration::fromYaml($path);
+
+    $eventBus = new \inisire\mqtt\NetBus\EventBus($logger, $sockets);
+    $eventBus->connect($bus);
+
+    $queryBus = new \inisire\mqtt\NetBus\QueryBus($logger, $sockets);
+    $queryBus->connect($bus);
+
+    $module = new \inisire\Xiaomi\Module\XiaomiModule('xiaomi', $config, $eventBus, $queryBus);
+    $queryBus->registerHandler($module->getBusId(), $module);
+});
