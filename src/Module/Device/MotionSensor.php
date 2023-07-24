@@ -19,6 +19,9 @@ class MotionSensor extends SubDevice
 //        '0.3.85' => '_illuminance',
 //        '0.4.85' => 'illuminance',
 
+        $data = $event->getData();
+        $properties = $data['properties'] ?? [];
+
         $update = [];
 
         if (($properties['3.1.85'] ?? null) !== null) {
