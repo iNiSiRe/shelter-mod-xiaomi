@@ -373,12 +373,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/iNiSiRe/shelter-core.git",
-                "reference": "7b710fd2c88e00d41a04c7d83658dab5d440e578"
+                "reference": "694e5b1ccfa3935bbe987a59d1bdc077cfe094f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/iNiSiRe/shelter-core/zipball/7b710fd2c88e00d41a04c7d83658dab5d440e578",
-                "reference": "7b710fd2c88e00d41a04c7d83658dab5d440e578",
+                "url": "https://api.github.com/repos/iNiSiRe/shelter-core/zipball/694e5b1ccfa3935bbe987a59d1bdc077cfe094f0",
+                "reference": "694e5b1ccfa3935bbe987a59d1bdc077cfe094f0",
                 "shasum": ""
             },
             "require": {
@@ -402,7 +402,7 @@
                 "source": "https://github.com/iNiSiRe/shelter-core/tree/master",
                 "issues": "https://github.com/iNiSiRe/shelter-core/issues"
             },
-            "time": "2023-07-23T20:24:35+00:00"
+            "time": "2023-07-24T13:11:23+00:00"
         },
         {
             "name": "psr/event-dispatcher",

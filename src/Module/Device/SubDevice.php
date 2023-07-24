@@ -27,7 +27,11 @@ class SubDevice extends Device
             new Matches([$gateway]),
             new Matches(['Gateway.SubDeviceUpdate']),
             function (EventInterface $event) {
-                $this->handleSubdeviceUpdate($event);
+                $data = $event->getData();
+                $did = $data['did'];
+                if ($did === $this->getDid()) {
+                    $this->handleSubdeviceUpdate($event);
+                }
             }
         ));
     }
@@ -45,13 +49,7 @@ class SubDevice extends Device
     public function handleSubdeviceUpdate(EventInterface $event): void
     {
         $data = $event->getData();
-
-        $did = $data['did'];
         $properties = $data['properties'];
-
-        if ($did !== $this->getDid()) {
-            return;
-        }
 
         $properties = $this->converter->convert($this->getModel(), $properties);
 
