@@ -6,9 +6,24 @@ namespace inisire\Xiaomi\Module\Service;
 
 class PropertiesConverter
 {
+    /**
+     * '8.0.2002': 'reset_cnt',
+     * '8.0.2003': 'send_all_cnt',
+     * '8.0.2004': 'send_fail_cnt',
+     * '8.0.2005': 'send_retry_cnt',
+     * '8.0.2006': 'chip_temperature',
+     * '8.0.2007': 'lqi',
+     * '8.0.2008': 'voltage',
+     * '8.0.2009': 'pv_state',
+     * '8.0.2010': 'cur_state',
+     * '8.0.2011': 'pre_state',
+     * '8.0.2012': 'power_tx',
+     */
+
     const COMMON = [
         '3.1.85' => 'state',
         '8.0.2001' => 'battery',
+        '8.0.9001' => ['battery_end_of_life'],
         '8.0.2008' => ['battery_voltage', self::FORMAT_DIVIDE, 1000],
     ];
 

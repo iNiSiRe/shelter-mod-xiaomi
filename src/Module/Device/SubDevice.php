@@ -53,8 +53,8 @@ class SubDevice extends Device
 
         $properties = $this->converter->convert($this->getModel(), $properties);
 
-        $this->properties->update($properties);
+        $changes = $this->properties->update($properties);
 
-        $this->dispatch(new DeviceUpdateEvent($this->getId(), $properties));
+        $this->dispatch(new DeviceUpdateEvent($this->getId(), $changes->all()));
     }
 }

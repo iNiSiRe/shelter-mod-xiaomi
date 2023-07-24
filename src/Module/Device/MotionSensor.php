@@ -41,8 +41,8 @@ class MotionSensor extends SubDevice
             return;
         }
 
-        $this->properties->update($update);
+        $changes = $this->properties->update($update);
 
-        $this->dispatch(new DeviceUpdateEvent($this->getId(), $update));
+        $this->dispatch(new DeviceUpdateEvent($this->getId(), $changes->all()));
     }
 }
