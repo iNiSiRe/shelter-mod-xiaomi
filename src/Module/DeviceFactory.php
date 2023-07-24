@@ -5,6 +5,7 @@ namespace inisire\Xiaomi\Module;
 use inisire\NetBus\Event\EventBusInterface;
 use inisire\Xiaomi\Module\Device\Gateway;
 use inisire\Xiaomi\Module\Device\Humidifier;
+use inisire\Xiaomi\Module\Device\MotionSensor;
 use inisire\Xiaomi\Module\Device\SubDevice;
 use Psr\Log\LoggerInterface;
 
@@ -24,7 +25,7 @@ class DeviceFactory
             'lumi.gateway.mgl03' => new Gateway($id, $model, 'generic', $parameters, $this->eventBus),
             'zhimi.humidifier.ca1' => new Humidifier($id, $model, 'generic.humidifier', $parameters, $this->eventBus),
             'lumi.sensor_ht' => new SubDevice($id, $model, 'sensor.humidity_temperature', $parameters, $this->eventBus),
-            'lumi.sensor_motion.aq2' => new SubDevice($id, $model, 'sensor.motion', $parameters, $this->eventBus),
+            'lumi.sensor_motion.aq2' => new MotionSensor($id, $model, 'sensor.motion', $parameters, $this->eventBus),
             'lumi.sensor_magnet.aq2' => new SubDevice($id, $model, 'sensor.magnet', $parameters, $this->eventBus),
             default => throw new \RuntimeException(sprintf('Model "%s" not supported', $model))
         };
