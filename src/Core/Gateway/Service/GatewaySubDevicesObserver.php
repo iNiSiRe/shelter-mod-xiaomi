@@ -2,7 +2,6 @@
 
 namespace inisire\Xiaomi\Core\Gateway\Service;
 
-use Evenement\EventEmitterInterface;
 use Evenement\EventEmitterTrait;
 use inisire\fibers\Network\SocketFactory;
 use inisire\Logging\NullLogger;
@@ -10,9 +9,8 @@ use inisire\mqtt\Connection;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use BinSoul\Net\Mqtt as MQTT;
-use inisire\Xiaomi\Core\Gateway\Event\GatewaySubDeviceUpdate;
 
-class GatewaySubDevicesObserver implements EventEmitterInterface, LoggerAwareInterface
+class GatewaySubDevicesObserver implements LoggerAwareInterface
 {
     use EventEmitterTrait;
 
@@ -67,7 +65,11 @@ class GatewaySubDevicesObserver implements EventEmitterInterface, LoggerAwareInt
                 switch ($cmd) {
                     case 'report':
                     {
-                        $this->updateSubDevice($message['did'], $this->prepareParameters($message['params']));
+                        $report = [
+                            'did' => $message['did'],
+                            'properties' => $this->prepareParameters($message['params'])
+                        ];
+                        $this->emit('report', [$report]);
                         break;
                     }
 
@@ -75,7 +77,11 @@ class GatewaySubDevicesObserver implements EventEmitterInterface, LoggerAwareInt
                     {
                         $updates = $message['params'] ?? [];
                         foreach ($updates as $update) {
-                            $this->updateSubDevice($update['did'], $this->prepareParameters($update['res_list']));
+                            $heartbeat = [
+                                'did' => $update['did'],
+                                'properties' => $this->prepareParameters($update['res_list'])
+                            ];
+                            $this->emit('heartbeat', [$heartbeat]);
                         }
                         break;
                     }
@@ -85,9 +91,14 @@ class GatewaySubDevicesObserver implements EventEmitterInterface, LoggerAwareInt
         }
     }
 
-    private function updateSubDevice(string $did, array $params = [])
+    public function onReport(callable $handler): void
     {
-        $this->emit('update', [new GatewaySubDeviceUpdate($did, $params)]);
+        $this->on('report', $handler);
+    }
+
+    public function onHeartbeat(callable $handler): void
+    {
+        $this->on('heartbeat', $handler);
     }
 
     public function setLogger(LoggerInterface $logger): void

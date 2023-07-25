@@ -20,20 +20,6 @@ class SubDevice extends Device
     public function load(): void
     {
         $this->converter = new PropertiesConverter();
-
-        $gateway = $this->getParameter('gateway');
-
-        $this->subscribe(new CallableSubscription(
-            new Matches([$gateway]),
-            new Matches(['Gateway.SubDeviceUpdate']),
-            function (EventInterface $event) {
-                $data = $event->getData();
-                $did = $data['did'];
-                if ($did === $this->getDid()) {
-                    $this->handleSubdeviceUpdate($event);
-                }
-            }
-        ));
     }
 
     public function getDid(): string
@@ -46,15 +32,47 @@ class SubDevice extends Device
         return [];
     }
 
-    public function handleSubdeviceUpdate(EventInterface $event): void
+    public function handleZigbeeReport(array $properties): void
     {
-        $data = $event->getData();
-        $properties = $data['properties'];
-
         $properties = $this->converter->convert($this->getModel(), $properties);
 
         $changes = $this->properties->update($properties);
 
-        $this->dispatch(new DeviceUpdateEvent($this->getId(), $changes->all()));
+        if (!$changes->isEmpty()) {
+            $this->dispatch(new DeviceUpdateEvent($this->getId(), $changes->all()));
+        }
+    }
+
+    public function handleZigbeeHeartbeat(array $properties): void
+    {
+        $properties = $this->converter->convert($this->getModel(), $properties);
+
+        $changes = $this->properties->update($properties);
+
+        if (!$changes->isEmpty()) {
+            $this->dispatch(new DeviceUpdateEvent($this->getId(), $changes->all()));
+        }
+    }
+
+    protected function filter(array $values): array
+    {
+        $filtered = [];
+
+        foreach ($values as $key => $value) {
+            if ($value !== null) {
+                $filtered[$key] = $value;
+            }
+        }
+
+        return $filtered;
+    }
+
+    protected function normalizeBatteryVoltage(mixed $value): ?float
+    {
+        if (!is_numeric($value)) {
+            return null;
+        }
+
+        return round($value / 1000, 2);
     }
 }

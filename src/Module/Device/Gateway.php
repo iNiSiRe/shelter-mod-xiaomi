@@ -3,7 +3,6 @@
 namespace inisire\Xiaomi\Module\Device;
 
 use inisire\NetBus\Event\Event;
-use inisire\Xiaomi\Core\Gateway\Event\GatewaySubDeviceUpdate;
 use inisire\Xiaomi\Core\Gateway\Service\GatewaySubDevicesObserver;
 use inisire\Xiaomi\Core\Gateway\XiaomiGateway;
 use inisire\NetBus\Query\QueryInterface;
@@ -33,28 +32,25 @@ class Gateway extends Device implements LoggerAwareInterface
 
         $this->observer->connect();
 
-        $this->observer->on('update', function (GatewaySubDeviceUpdate $event) {
-            $this->onSubDeviceUpdate($event);
+        $this->observer->onReport(function (array $data) {
+            $this->dispatch(new Event('Gateway.Zigbee.Report', $data));
+        });
+
+        $this->observer->onHeartbeat(function (array $data) {
+            $this->dispatch(new Event('Gateway.Zigbee.Heartbeat', $data));
         });
     }
 
-    private function onSubDeviceUpdate(GatewaySubDeviceUpdate $event): void
+    public function onQuery(QueryInterface $query): ResultInterface
     {
-        $this->dispatch(new Event('Gateway.SubDeviceUpdate', [
-            'did' => $event->getDid(),
-            'properties' => $event->getProperties()
-        ]));
-    }
-
-    public function getSubscribedQueries(): array
-    {
-        return [
-            'GetInfo' => [$this, 'getInfo'],
-            'TriggerAlarm' => [$this, 'triggerAlarm'],
-            'DisarmAlarm' => [$this, 'disarmAlarm'],
-            'GetSubDevices' => [$this, 'getSubDevices'],
-            'Call' => [$this, 'call'],
-        ];
+        return match ($query->getName()) {
+            'GetInfo' => $this->getInfo(),
+            'TriggerAlarm' => $this->triggerAlarm(),
+            'DisarmAlarm' => $this->disarmAlarm(),
+            'GetSubDevices' => $this->getSubDevices(),
+            'Call' => $this->call($query),
+            default => parent::onQuery($query)
+        };
     }
 
     public function triggerAlarm(): ResultInterface

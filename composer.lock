@@ -237,12 +237,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/iNiSiRe/netbus.git",
-                "reference": "46826e34e41b11749ad9953817612ad4f4d1ade7"
+                "reference": "54a6643746f36c927ce83bed12891c9cdc3f9baa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/iNiSiRe/netbus/zipball/46826e34e41b11749ad9953817612ad4f4d1ade7",
-                "reference": "46826e34e41b11749ad9953817612ad4f4d1ade7",
+                "url": "https://api.github.com/repos/iNiSiRe/netbus/zipball/54a6643746f36c927ce83bed12891c9cdc3f9baa",
+                "reference": "54a6643746f36c927ce83bed12891c9cdc3f9baa",
                 "shasum": ""
             },
             "require": {
@@ -264,7 +264,7 @@
                 "source": "https://github.com/iNiSiRe/netbus/tree/master",
                 "issues": "https://github.com/iNiSiRe/netbus/issues"
             },
-            "time": "2023-07-22T19:43:13+00:00"
+            "time": "2023-07-25T22:16:44+00:00"
         },
         {
             "name": "inisire/netbus-mqtt",
@@ -272,12 +272,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/iNiSiRe/netbus-mqtt.git",
-                "reference": "8b1f0e9744089f648dc86c0ede4ef92786ddd6ce"
+                "reference": "dfee06740fb11ecbc9e707e3e712afb266a2a5e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/iNiSiRe/netbus-mqtt/zipball/8b1f0e9744089f648dc86c0ede4ef92786ddd6ce",
-                "reference": "8b1f0e9744089f648dc86c0ede4ef92786ddd6ce",
+                "url": "https://api.github.com/repos/iNiSiRe/netbus-mqtt/zipball/dfee06740fb11ecbc9e707e3e712afb266a2a5e8",
+                "reference": "dfee06740fb11ecbc9e707e3e712afb266a2a5e8",
                 "shasum": ""
             },
             "require": {
@@ -297,7 +297,7 @@
                 "source": "https://github.com/iNiSiRe/netbus-mqtt/tree/master",
                 "issues": "https://github.com/iNiSiRe/netbus-mqtt/issues"
             },
-            "time": "2023-07-23T20:55:16+00:00"
+            "time": "2023-07-25T22:17:14+00:00"
         },
         {
             "name": "inisire/protocol-byte-buffer",
@@ -373,12 +373,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/iNiSiRe/shelter-core.git",
-                "reference": "694e5b1ccfa3935bbe987a59d1bdc077cfe094f0"
+                "reference": "f5a6a2994a8ac785a255485a39c380318e179232"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/iNiSiRe/shelter-core/zipball/694e5b1ccfa3935bbe987a59d1bdc077cfe094f0",
-                "reference": "694e5b1ccfa3935bbe987a59d1bdc077cfe094f0",
+                "url": "https://api.github.com/repos/iNiSiRe/shelter-core/zipball/f5a6a2994a8ac785a255485a39c380318e179232",
+                "reference": "f5a6a2994a8ac785a255485a39c380318e179232",
                 "shasum": ""
             },
             "require": {
@@ -402,7 +402,7 @@
                 "source": "https://github.com/iNiSiRe/shelter-core/tree/master",
                 "issues": "https://github.com/iNiSiRe/shelter-core/issues"
             },
-            "time": "2023-07-24T13:11:23+00:00"
+            "time": "2023-07-25T17:36:40+00:00"
         },
         {
             "name": "psr/event-dispatcher",

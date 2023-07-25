@@ -11,37 +11,23 @@ use inisire\Xiaomi\Module\Service\PropertiesConverter;
 use Shelter\Bus\Event\DeviceUpdateEvent;
 
 
-class MotionSensor extends SubDevice
+class MagnetSensor extends SubDevice
 {
-    private function normalizeMotionAt(mixed $value): ?int
+    private function normalizeOpen(mixed $value): ?bool
     {
         if (!is_numeric($value)) {
             return null;
         }
 
-        return $value === 1
-            ? time()
-            : null;
-    }
-
-    private function normalizeIlluminance(mixed $value): ?int
-    {
-        if (!is_numeric($value)) {
-            return null;
-        }
-
-        return $value;
+        return $value === 1;
     }
 
     public function handleZigbeeReport(array $properties): void
     {
-//        '3.1.85' => 'motion',
-//        '0.3.85' => '_illuminance',
-//        '0.4.85' => 'illuminance',
+//        '3.1.85' => 'state',
 
         $update = $this->filter([
-            'motionAt' => $this->normalizeMotionAt($properties['3.1.85'] ?? null),
-            'illuminance' => $this->normalizeIlluminance($properties['0.4.85'] ?? null)
+            'open' => $this->normalizeOpen($properties['3.1.85'] ?? null)
         ]);
 
         $changes = $this->properties->update($update);

@@ -11,37 +11,34 @@ use inisire\Xiaomi\Module\Service\PropertiesConverter;
 use Shelter\Bus\Event\DeviceUpdateEvent;
 
 
-class MotionSensor extends SubDevice
+class HumidityTemperatureSensor extends SubDevice
 {
-    private function normalizeMotionAt(mixed $value): ?int
+    private function normalize(string $type, mixed $value): ?float
     {
         if (!is_numeric($value)) {
             return null;
         }
 
-        return $value === 1
-            ? time()
-            : null;
-    }
-
-    private function normalizeIlluminance(mixed $value): ?int
-    {
-        if (!is_numeric($value)) {
+        // Filter corrupted reports
+        if ($type === 'temperature' && $value < -50) {
+            return null;
+        } else if ($type === 'humidity' && $value > 1000) {
             return null;
         }
 
-        return $value;
+        return round($value / 100, 2);
     }
 
     public function handleZigbeeReport(array $properties): void
     {
-//        '3.1.85' => 'motion',
-//        '0.3.85' => '_illuminance',
-//        '0.4.85' => 'illuminance',
+//        '0.1.85' => ['temperature', self::FORMAT_DIVIDE, 100],
+//        '0.2.85' => ['humidity', self::FORMAT_DIVIDE, 100],
+//        '0.3.85' => ['pressure', self::FORMAT_DIVIDE, 100],
 
         $update = $this->filter([
-            'motionAt' => $this->normalizeMotionAt($properties['3.1.85'] ?? null),
-            'illuminance' => $this->normalizeIlluminance($properties['0.4.85'] ?? null)
+            'temperature' => $this->normalize('temperature',$properties['0.1.85'] ?? null),
+            'humidity' => $this->normalize('humidity', $properties['0.2.85'] ?? null),
+            'pressure' => $this->normalize('pressure', $properties['0.3.85'] ?? null),
         ]);
 
         $changes = $this->properties->update($update);

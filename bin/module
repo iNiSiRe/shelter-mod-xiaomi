@@ -3,15 +3,7 @@
 
 use inisire\fibers\Network\SocketFactory;
 use inisire\Logging\EchoLogger;
-use inisire\NetBus\Event\CallableSubscription;
-use inisire\NetBus\Event\EventInterface;
-use inisire\NetBus\Event\Subscription\Matches;
-use inisire\NetBus\Event\Subscription\Wildcard;
 use inisire\Xiaomi\Module\Configuration;
-use Shelter\Bus\Event\DiscoverRequest;
-use Shelter\Bus\Event\DiscoverResponse;
-use Shelter\Bus\Events;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 require_once dirname(__DIR__).'/vendor/autoload.php';
 
@@ -41,6 +33,5 @@ if (!file_exists($path)) {
     $queryBus = new \inisire\mqtt\NetBus\QueryBus($logger, $sockets);
     $queryBus->connect($bus);
 
-    $module = new \inisire\Xiaomi\Module\XiaomiModule('xiaomi', $config, $eventBus, $queryBus);
-    $queryBus->registerHandler($module->getBusId(), $module);
+    new \inisire\Xiaomi\Module\XiaomiModule('xiaomi', $config, $eventBus, $queryBus);
 });

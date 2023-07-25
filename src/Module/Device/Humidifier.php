@@ -2,6 +2,7 @@
 
 namespace inisire\Xiaomi\Module\Device;
 
+use inisire\NetBus\Query\QueryInterface;
 use inisire\NetBus\Query\Result;
 use inisire\NetBus\Query\ResultInterface;
 use inisire\Xiaomi\Module\Device;
@@ -66,13 +67,14 @@ class Humidifier extends Device
         return new Result(0, ['result' => $response]);
     }
 
-    public function getSubscribedQueries(): array
+    public function onQuery(QueryInterface $query): ResultInterface
     {
-        return [
-            'Enable' => [$this, 'enable'],
-            'Disable' => [$this, 'disable'],
-            'GetState' => [$this, 'getState'],
-        ];
+        return match ($query->getName()) {
+            'Enable' => $this->enable(),
+            'Disable' => $this->disable(),
+            'GetState' => $this->getState(),
+            default => parent::onQuery($query)
+        };
     }
 
     public function setLogger(LoggerInterface $logger): void

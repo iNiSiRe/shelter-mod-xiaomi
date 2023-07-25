@@ -7,13 +7,16 @@ use inisire\NetBus\Event\EventBusInterface;
 use inisire\NetBus\Event\EventInterface;
 use inisire\NetBus\Event\SubscriptionInterface;
 use inisire\NetBus\Query\QueryHandlerInterface;
+use inisire\NetBus\Query\QueryInterface;
+use inisire\NetBus\Query\Result;
+use inisire\NetBus\Query\ResultInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Shelter\Bus\State;
 use Shelter\Bus\MutableState;
 
 
-abstract class Device implements LoggerAwareInterface, QueryHandlerInterface
+abstract class Device implements LoggerAwareInterface
 {
     private LoggerInterface $logger;
 
@@ -76,9 +79,9 @@ abstract class Device implements LoggerAwareInterface, QueryHandlerInterface
         $this->eventBus->subscribe($subscriber);
     }
 
-    public function getSubscribedQueries(): array
+    public function onQuery(QueryInterface $query): ResultInterface
     {
-        return [];
+        return new Result(-1, ['error' => 'No query handler']);
     }
 
     public function getDiscoverModel(): string
