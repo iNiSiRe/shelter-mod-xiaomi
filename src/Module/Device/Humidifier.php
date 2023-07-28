@@ -33,6 +33,7 @@ class Humidifier extends Device
                 $this->properties->update([
                     'enabled' => $state['enabled'],
                     'mode' => match ($state['mode']) {
+                        'auto' => 0,
                         'low' => 1,
                         'medium' => 2,
                         'high' => 3
