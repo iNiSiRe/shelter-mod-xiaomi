@@ -118,12 +118,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/iNiSiRe/fibers.git",
-                "reference": "3cf9ab3479877c92e3309eb801421ab54cc80ab9"
+                "reference": "c5fffeab02f3fe0694f3bb62089ec5d208c6af09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/iNiSiRe/fibers/zipball/3cf9ab3479877c92e3309eb801421ab54cc80ab9",
-                "reference": "3cf9ab3479877c92e3309eb801421ab54cc80ab9",
+                "url": "https://api.github.com/repos/iNiSiRe/fibers/zipball/c5fffeab02f3fe0694f3bb62089ec5d208c6af09",
+                "reference": "c5fffeab02f3fe0694f3bb62089ec5d208c6af09",
                 "shasum": ""
             },
             "require": {
@@ -154,7 +154,7 @@
                 "source": "https://github.com/iNiSiRe/fibers/tree/master",
                 "issues": "https://github.com/iNiSiRe/fibers/issues"
             },
-            "time": "2023-07-20T18:44:19+00:00"
+            "time": "2023-07-29T16:49:01+00:00"
         },
         {
             "name": "inisire/fibers-mqtt",
@@ -162,12 +162,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/iNiSiRe/fibers-mqtt.git",
-                "reference": "77b14437e1065ed96e12387c7caf012534cd471e"
+                "reference": "58ebb023c7ce5ec4865a6ce5ec18523110423c3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/iNiSiRe/fibers-mqtt/zipball/77b14437e1065ed96e12387c7caf012534cd471e",
-                "reference": "77b14437e1065ed96e12387c7caf012534cd471e",
+                "url": "https://api.github.com/repos/iNiSiRe/fibers-mqtt/zipball/58ebb023c7ce5ec4865a6ce5ec18523110423c3b",
+                "reference": "58ebb023c7ce5ec4865a6ce5ec18523110423c3b",
                 "shasum": ""
             },
             "require": {
@@ -192,7 +192,7 @@
                 "source": "https://github.com/iNiSiRe/fibers-mqtt/tree/master",
                 "issues": "https://github.com/iNiSiRe/fibers-mqtt/issues"
             },
-            "time": "2023-07-23T20:54:00+00:00"
+            "time": "2023-07-29T16:49:01+00:00"
         },
         {
             "name": "inisire/logging",
@@ -272,12 +272,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/iNiSiRe/netbus-mqtt.git",
-                "reference": "dfee06740fb11ecbc9e707e3e712afb266a2a5e8"
+                "reference": "f79a06c1794e8707674a29240d0b189d9ba2aa9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/iNiSiRe/netbus-mqtt/zipball/dfee06740fb11ecbc9e707e3e712afb266a2a5e8",
-                "reference": "dfee06740fb11ecbc9e707e3e712afb266a2a5e8",
+                "url": "https://api.github.com/repos/iNiSiRe/netbus-mqtt/zipball/f79a06c1794e8707674a29240d0b189d9ba2aa9f",
+                "reference": "f79a06c1794e8707674a29240d0b189d9ba2aa9f",
                 "shasum": ""
             },
             "require": {
@@ -297,7 +297,7 @@
                 "source": "https://github.com/iNiSiRe/netbus-mqtt/tree/master",
                 "issues": "https://github.com/iNiSiRe/netbus-mqtt/issues"
             },
-            "time": "2023-07-25T22:17:14+00:00"
+            "time": "2023-07-29T16:49:01+00:00"
         },
         {
             "name": "inisire/protocol-byte-buffer",
@@ -338,12 +338,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/iNiSiRe/protocol-miio.git",
-                "reference": "cb6c4483b4f17d405809161cb9473b245d463c02"
+                "reference": "6dc36b6b5a5c2c5aea4401739bc68bb4912beb06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/iNiSiRe/protocol-miio/zipball/cb6c4483b4f17d405809161cb9473b245d463c02",
-                "reference": "cb6c4483b4f17d405809161cb9473b245d463c02",
+                "url": "https://api.github.com/repos/iNiSiRe/protocol-miio/zipball/6dc36b6b5a5c2c5aea4401739bc68bb4912beb06",
+                "reference": "6dc36b6b5a5c2c5aea4401739bc68bb4912beb06",
                 "shasum": ""
             },
             "require": {
@@ -365,7 +365,7 @@
                 "source": "https://github.com/iNiSiRe/protocol-miio/tree/master",
                 "issues": "https://github.com/iNiSiRe/protocol-miio/issues"
             },
-            "time": "2023-07-15T11:38:24+00:00"
+            "time": "2023-07-29T16:49:01+00:00"
         },
         {
             "name": "inisire/shelter-core",

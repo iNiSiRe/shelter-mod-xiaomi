@@ -2,23 +2,22 @@
 
 namespace inisire\Xiaomi\Module;
 
-use inisire\Logging\NullLogger;
 use inisire\NetBus\Event\EventBusInterface;
 use inisire\NetBus\Event\EventInterface;
 use inisire\NetBus\Event\SubscriptionInterface;
-use inisire\NetBus\Query\QueryHandlerInterface;
 use inisire\NetBus\Query\QueryInterface;
 use inisire\NetBus\Query\Result;
 use inisire\NetBus\Query\ResultInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Shelter\Bus\State;
 use Shelter\Bus\MutableState;
 
 
 abstract class Device implements LoggerAwareInterface
 {
-    private LoggerInterface $logger;
+    protected LoggerInterface $logger;
 
     protected State $properties;
 

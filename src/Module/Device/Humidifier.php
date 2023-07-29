@@ -63,7 +63,7 @@ class Humidifier extends Device
 
     public function getState(): ResultInterface
     {
-        $response = $this->humidifier->disable();
+        $response = $this->humidifier->getState();
 
         return new Result(0, ['result' => $response]);
     }
