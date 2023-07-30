@@ -28,9 +28,11 @@ if (!file_exists($path)) {
     $config = Configuration::fromYaml($path);
 
     $eventBus = new \inisire\mqtt\NetBus\EventBus($logger, $sockets);
+    $eventBus->setLogger(new \inisire\Logging\Decorator\WithContext(['source' => 'EventBus'], $logger));
     $eventBus->connect($bus);
 
     $queryBus = new \inisire\mqtt\NetBus\QueryBus($logger, $sockets);
+    $queryBus->setLogger(new \inisire\Logging\Decorator\WithContext(['source' => 'QueryBus'], $logger));
     $queryBus->connect($bus);
 
     new \inisire\Xiaomi\Module\XiaomiModule('xiaomi', $config, $eventBus, $queryBus);

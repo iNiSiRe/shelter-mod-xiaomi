@@ -35,15 +35,23 @@ class GatewaySubDevicesObserver implements LoggerAwareInterface
 
     public function connect(): void
     {
-        $mqtt = new Connection($this->logger, new SocketFactory());
-
-        if (!$mqtt->connect($this->host)) {
-            return;
-        }
-
-        $this->logger->info('MQTT: Connected', ['channel' => __CLASS__]);
-        $mqtt->subscribe(new MQTT\DefaultSubscription('zigbee/send'));
+        $mqtt = new Connection();
         $mqtt->onMessage([$this, 'handleMessage']);
+
+        do {
+            $connected = $mqtt->connect($this->host);
+        } while (!$connected);
+
+        $mqtt->onDisconnect([$this, 'onDisconnect']);
+
+        $this->logger->info('GatewaySubDevicesObserver: connected');
+        $mqtt->subscribe(new MQTT\DefaultSubscription('zigbee/send'));
+    }
+
+    public function onDisconnect(): void
+    {
+        $this->logger->error('GatewaySubDevicesObserver: disconnected');
+        $this->connect();
     }
 
     public function handleMessage(MQTT\Message $message): void
